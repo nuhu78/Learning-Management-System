@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Teacher, Student, Profile
+from .models import Teacher, Student, Profile, Course, Enrollment, Lesson, Assignment,Submission,Results
 
 class TeacherSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,3 +37,33 @@ class RegisterSerializer(serializers.ModelSerializer):
 class loginSerializer(serializers.Serializer):
     phone = serializers.CharField(required=True)
     password = serializers.CharField(required=True, write_only=True)    
+class CourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = ['id', 'title', 'description', 'teacher']
+
+class EnrollmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Enrollment
+        fields = ['id', 'student', 'course', 'enrollment_date']
+
+class LessonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lesson
+        fields = ['id', 'title', 'description', 'course']
+
+class AssignmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Assignment
+        fields = ['id', 'title', 'description', 'lesson', 'course', 'due_date']
+
+class SubmissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Submission
+        fields = ['id', 'student', 'assignment', 'submitted_at', 'content']
+        read_only_fields = ['submitted_at']
+
+class ResultsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Results
+        fields = ['id', 'submission', 'score', 'feedback']
